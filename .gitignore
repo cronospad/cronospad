@@ -1,0 +1,11 @@
+__pycache__
+.env
+.history
+.hypothesis/
+build/
+reports/
+interface/
+scripts/
+tests/
+.gitattributes
+brownie-config.yaml
