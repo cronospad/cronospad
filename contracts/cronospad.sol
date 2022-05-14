@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.0;
+pragma solidity 0.8.7;
 
 
 
@@ -132,7 +132,7 @@ contract ERC20 is Context, IERC20, IERC20Metadata {
     /**
      * @dev Returns the name of the token.
      */
-    function name() public view virtual override returns (string memory) {
+    function name() external view virtual override returns (string memory) {
         return _name;
     }
 
@@ -140,7 +140,7 @@ contract ERC20 is Context, IERC20, IERC20Metadata {
      * @dev Returns the symbol of the token, usually a shorter version of the
      * name.
      */
-    function symbol() public view virtual override returns (string memory) {
+    function symbol() external view virtual override returns (string memory) {
         return _symbol;
     }
 
@@ -157,14 +157,14 @@ contract ERC20 is Context, IERC20, IERC20Metadata {
      * no way affects any of the arithmetic of the contract, including
      * {IERC20-balanceOf} and {IERC20-transfer}.
      */
-    function decimals() public view virtual override returns (uint8) {
+    function decimals() external view virtual override returns (uint8) {
         return 18;
     }
 
     /**
      * @dev See {IERC20-totalSupply}.
      */
-    function totalSupply() public view virtual override returns (uint256) {
+    function totalSupply() external view virtual override returns (uint256) {
         return _totalSupply;
     }
 
@@ -251,7 +251,7 @@ contract ERC20 is Context, IERC20, IERC20Metadata {
      *
      * - `spender` cannot be the zero address.
      */
-    function increaseAllowance(address spender, uint256 addedValue) public virtual returns (bool) {
+    function increaseAllowance(address spender, uint256 addedValue) external virtual returns (bool) {
         address owner = _msgSender();
         _approve(owner, spender, allowance(owner, spender) + addedValue);
         return true;
@@ -271,7 +271,7 @@ contract ERC20 is Context, IERC20, IERC20Metadata {
      * - `spender` must have allowance for the caller of at least
      * `subtractedValue`.
      */
-    function decreaseAllowance(address spender, uint256 subtractedValue) public virtual returns (bool) {
+    function decreaseAllowance(address spender, uint256 subtractedValue) external virtual returns (bool) {
         address owner = _msgSender();
         uint256 currentAllowance = allowance(owner, spender);
         require(currentAllowance >= subtractedValue, "ERC20: decreased allowance below zero");
@@ -303,6 +303,8 @@ contract ERC20 is Context, IERC20, IERC20Metadata {
     ) internal virtual {
         require(from != address(0), "ERC20: transfer from the zero address");
         require(to != address(0), "ERC20: transfer to the zero address");
+		require(amount >=0 , "amount must be greater than or equal to zero");
+		
 
         _beforeTokenTransfer(from, to, amount);
 
@@ -555,5 +557,9 @@ contract Cronospad is ERC20, ERC20Burnable, Ownable {
     constructor() ERC20("Cronospad", "CPAD") {	
         _mint(msg.sender, 1000000000000000000000000000);	
     }	
+
+    function getOwner() public view virtual returns (address){
+       return owner();
+    }
 		
 }
